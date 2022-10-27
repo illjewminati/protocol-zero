@@ -1,0 +1,15 @@
+export const retrieveError = (e: any): string => {
+    if(e.includes("Swap paused")) return "Swap Paused"
+    if(e.includes("Unknown target")) return "Unknown Paymaster Target Contract"
+    if(e.includes("Token not whitelisted")) return "Token Not Allowed"
+    if(e.includes("Fee+amount: Not enough allowance")) return "Fee+amount: Not enough allowance"
+    if(e.includes("Fee+amount: Not enough balance")) return "Fee+amount: Not enough balance"
+    if(e.includes("Fee: Not enough allowance")) return "Fee: Not enough allowance"
+    if(e.includes("Fee: Not enough balance")) return "Fee: Not enough balance"
+    if(e.includes("Not enough allowance")) return "Not enough allowance"
+    if(e.includes("Not enough balance")) return "Not enough balance"
+    if(e.includes("Not enough to pay for tx")) return "Swap Amount Too Low"
+    if(e.includes("Not enough gas")) return "Send More Gas"
+    if(e.includes("Paymaster balance too low")) return "Paymaster Balance Too Low"
+    return "Unknown Error"
+}

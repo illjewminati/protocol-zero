@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { combineReducers } from 'redux';\nimport ReducerUI from './ui/reducers';\nimport ReducerBlockchain from './blockchain/reducers';\nexport var createRootReducer = function createRootReducer() {\n  return combineReducers({\n    ui: ReducerUI,\n    blockchain: ReducerBlockchain\n  });\n};","map":null,"metadata":{},"sourceType":"module"}

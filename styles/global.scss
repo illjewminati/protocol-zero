@@ -1,0 +1,30 @@
+/* Dependencies */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+/* Global Variables */
+
+:root {
+    --titlefont: "DM Sans";
+    --headingfont: "IBM Plex Mono";
+    --blurbfont: "Work Sans";
+    --bodyfont: "Work Sans";
+    --bodycolor: #ccc;
+    --bodyfontsize: 16px;
+    --linkcolor: #c9945b;
+    --altcolor: #CCD0D2;
+}
+
+body {
+    color: var(--bodycolor);
+    font-family: var(--bodyfont), sans-serif;
+    font-size: var(--bodyfontsize);
+    background: #161616
+}
+
+.header_area {
+    z-index: 1111;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: transparent;
+}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { gql } from \"urql\";\nexport const GET_LISTINGS = gql`\n  query getCreatedNfts() {\n    listings(first: 5) {\n        id\n        seller\n        token\n        tokenId\n      }\n  }\n`;","map":null,"metadata":{},"sourceType":"module"}
