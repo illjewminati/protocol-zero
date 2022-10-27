@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { combineReducers } from 'redux';\nimport ReducerUI from './ui/reducers';\nimport ReducerBlockchain from './blockchain/reducers';\nexport const createRootReducer = () => combineReducers({\n  ui: ReducerUI,\n  blockchain: ReducerBlockchain\n});","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { getContract } from \"./contract_loader\";\nimport * as artifact from \"../../artifacts/contracts/TokenSwap.sol/TokenSwap.json\";\nconst address = process.env.GSN_TOKEN_SWAP;\nexport const loadTokenSwapContract = async signer => {\n  return getContract(address, artifact.abi, signer);\n};","map":null,"metadata":{},"sourceType":"module"}

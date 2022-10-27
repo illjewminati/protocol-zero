@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { Network } from \"../types/blockchain\";\nexport const isZeroAddress = address => {\n  return address.toString().toUpperCase() === \"0x0000000000000000000000000000000000000000\".toString().toUpperCase();\n};\nexport const getNetworkName = networkID => Network[networkID];","map":null,"metadata":{},"sourceType":"module"}

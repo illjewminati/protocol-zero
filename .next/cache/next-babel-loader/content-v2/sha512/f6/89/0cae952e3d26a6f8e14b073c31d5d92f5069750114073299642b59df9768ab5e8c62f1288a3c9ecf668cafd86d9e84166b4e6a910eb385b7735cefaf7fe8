@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { getContract } from \"./contract_loader\";\nimport * as artifact from \"../../artifacts/@opengsn/contracts/src/interfaces/IRelayHub.sol/IRelayHub.json\";\nconst address = process.env.GSN_RELAY_HUB;\nexport const getRelayHubContract = signer => {\n  return getContract(address, artifact.abi, signer);\n};","map":null,"metadata":{},"sourceType":"module"}

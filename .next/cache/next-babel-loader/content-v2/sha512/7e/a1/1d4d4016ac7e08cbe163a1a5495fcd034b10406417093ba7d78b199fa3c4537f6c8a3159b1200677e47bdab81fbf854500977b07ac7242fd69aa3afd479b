@@ -1,1 +1,0 @@
-{"ast":null,"code":"export class ComponentUnmountedException extends Error {\n  constructor(componentName) {\n    super(`${componentName} unmounted`); // see: typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html\n\n    Object.setPrototypeOf(this, new.target.prototype);\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

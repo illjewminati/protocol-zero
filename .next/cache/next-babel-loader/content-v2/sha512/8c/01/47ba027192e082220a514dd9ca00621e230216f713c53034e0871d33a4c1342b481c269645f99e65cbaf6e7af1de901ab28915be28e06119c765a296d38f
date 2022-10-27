@@ -1,1 +1,0 @@
-{"ast":null,"code":"","map":{"version":3,"sources":[],"names":[],"mappings":"","sourcesContent":["import { gql } from \"urql\";\n\n// export const GET_LISTINGS = gql`\n//   query getCreatedNfts() {\n//     listings(first: 5) {\n//         id\n//         seller\n//         token\n//         tokenId\n//       }\n//   }\n// `;"]},"metadata":{},"sourceType":"module"}
