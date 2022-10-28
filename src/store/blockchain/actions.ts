@@ -240,7 +240,6 @@ export const fetchTokenBalances: ThunkCreator<Promise<any>> = () => {
             
         
         const knownTokens = (await getKnownTokens(networkID)).getTokens()
-            console.log('knownTokensknownTokens',knownTokens)        
        await Promise.all(knownTokens.map(async token => {
             const erc20 = new ERC20Controller(token.address, signer);
             const balance = (await erc20.balanceOf(ethAccount)).toString();

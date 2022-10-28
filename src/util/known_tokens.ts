@@ -1,9 +1,10 @@
 
 import { Config } from '../common/config';
 import { UI_DECIMALS_DISPLAYED_DEFAULT_PRECISION } from '../common/constants';
-import { PAIRS_QUERY } from '../components/query';
+// import { PAIRS_QUERY } from '../components/query';
 import { apolloClient } from '../pages/_app';
 import { TokenMetaData, Token } from '../types/blockchain';
+import gql from 'graphql-tag';
 
 
 const KNOWN_TOKENS_META_DATA: TokenMetaData[] = Config.getConfig().tokens;
@@ -50,14 +51,23 @@ export class KnownTokens {
 let knownTokens: KnownTokens;
 let selectedNetworkId: number
 export const getKnownTokens = async (networkID: number) => {
-
+    const PAIRS_QUERY = gql`
+    query MyQuery {
+      pairs(first:50 where:{token1:"0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"} orderBy:reserve1 orderDirection:desc){
+        id
+        token0{    
+          name
+          symbol
+          decimals
+          id
+        }
+      }
+      }
+`
     const response = await apolloClient.query({
         query: PAIRS_QUERY,      
         fetchPolicy: 'network-only',
       });
-      console.log('response',response);
-      console.log('response2',response.data.pairs);
-      console.log('response2',response.data.pairs[0].token0);
 
       let tokens:TokenMetaData[] = [];
 
@@ -80,7 +90,6 @@ export const getKnownTokens = async (networkID: number) => {
         knownTokens = new KnownTokens(tokens, networkID);
     }
 
-    console.log('knownTokens22',knownTokens)
 
     return knownTokens;
 };
