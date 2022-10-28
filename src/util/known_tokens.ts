@@ -1,6 +1,8 @@
 
 import { Config } from '../common/config';
 import { UI_DECIMALS_DISPLAYED_DEFAULT_PRECISION } from '../common/constants';
+import { PAIRS_QUERY } from '../components/query';
+import { apolloClient } from '../pages/_app';
 import { TokenMetaData, Token } from '../types/blockchain';
 
 
@@ -41,14 +43,45 @@ export class KnownTokens {
     public getTokens = (): Token[] => {
         return this._tokens;
     };
+    
 }
-
+  
+    
 let knownTokens: KnownTokens;
 let selectedNetworkId: number
-export const getKnownTokens = (networkID: number): KnownTokens => {
+export const getKnownTokens = async (networkID: number) => {
+
+    const response = await apolloClient.query({
+        query: PAIRS_QUERY,      
+        fetchPolicy: 'network-only',
+      });
+      console.log('response',response);
+      console.log('response2',response.data.pairs);
+      console.log('response2',response.data.pairs[0].token0);
+
+      let tokens:TokenMetaData[] = [];
+
+      response.data.pairs.map((pair)=>{
+        tokens.push({
+            addresses:{
+                1:pair.token0.id
+            },
+            symbol:pair.token0.symbol,
+            decimals:pair.token0.decimals,
+            name:pair.token0.name,
+            primaryColor:'trasperant',
+            icon:'',
+            displayDecimals:5
+          })
+      })
+
+
     if (!knownTokens || !selectedNetworkId || networkID !== selectedNetworkId) {
-        knownTokens = new KnownTokens(KNOWN_TOKENS_META_DATA, networkID);
+        knownTokens = new KnownTokens(tokens, networkID);
     }
+
+    console.log('knownTokens22',knownTokens)
+
     return knownTokens;
 };
 

@@ -1,8 +1,6 @@
 import React, { PureComponent } from "react";
 import { NextRouter, withRouter } from "next/router";
 import { SwapTokenContainer } from "../components/account/swap_token";
-import UniswapWindow from "../components/uniswap_swap";
-import { createClient, Provider } from "urql";
 
 
 interface WithRouterProps {
@@ -20,7 +18,6 @@ class Index extends PureComponent<Props> {
         <div className="container_index">
           <div style={{ textAlign: "center" }}>
             <SwapTokenContainer />
-            <UniswapWindow />
           </div>
         </div>
       </section>

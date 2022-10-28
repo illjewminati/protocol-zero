@@ -14,6 +14,7 @@
     "change-prod-env": "cp .next.config.prod.js next.config.js"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
     "@babel/runtime": "7.4.3",
     "@opengsn/common": "^2.2.5",
     "@opengsn/provider": "^2.2.5",

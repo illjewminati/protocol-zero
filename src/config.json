@@ -9,13 +9,14 @@
             "primaryColor": "transparent",
             "icon": "assets/icons/zro.svg",
             "addresses": {
-                "1": "0xd79F43113B22D1eA9F29cfcC7BB287489F8EE5e0",
+                "1": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
                 "5": "0x35C817174E635FC47704d7394520aBa2eD755204",
                 "1337": "0x4ed7c70F96B99c776995fB64377f0d4aB3B0e1C1"
             },
             "decimals": 18,
             "displayDecimals": 5
         }
+
     ]
 }
 

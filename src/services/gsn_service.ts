@@ -13,6 +13,7 @@ export const swap = async (
     const tSwap = await loadTokenSwapContract(signer);
 
     const amountBN = utils.parseUnits(amount, token.decimals);
+    
     return tSwap
             .connect(gsnProvider.getSigner())
             .swapTokensForEth(token.address, amountBN, {gasLimit: minGas})

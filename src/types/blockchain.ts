@@ -71,6 +71,7 @@ export interface Blockchain {
     readonly web3Provider: ethers.providers.Web3Provider,
     readonly gsnProvider?: ethers.providers.Web3Provider,
     readonly gasPrice?: string,
+    readonly selectedToken?: any
 }
 export interface Paymaster {
     balance: Balance,
@@ -130,7 +131,7 @@ export interface TokenMetaData {
     name: string,
     primaryColor: string,
     icon?: string,
-    displayDecimals?: number,
+    displayDecimals?: number,//5
 }
 
 export interface Balance {

@@ -66,7 +66,7 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         swapState: SwapState.Init,
         txHash: null,
         gasUsed: "",
-        selectedToken: process.env.ZRO_TOKEN,
+        selectedToken: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
         txPrice: "",
         errorMessage: null,
         reviewSwap: false,
@@ -87,6 +87,7 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         if(res.error) {
             return this.setState({swapState: SwapState.Init, errorMessage: res.message})
         }
+
         this.setState({
             txHash: res.data.txHash, 
             gasUsed: res.data.gasUsed, 
@@ -143,12 +144,31 @@ class SwapToken extends PureComponent<Props, OwnProps> {
     }
 
     renderTokenInfo = () => {
+        
         const { selectedToken } = this.state
         if(selectedToken === "") return null;
         const { tokensBalance } = this.props;
-        const tokenBalance = tokensBalance.find(t => t.token.address === selectedToken)
-        return (
+
+        const tokenBalance = tokensBalance.find(t => t.token.address.toLowerCase() === selectedToken.toLowerCase())        
+        
+
+        return  tokenBalance ? (
+            
             <>
+                <div>
+                    <select defaultValue={selectedToken.toLowerCase()} onChange={(e)=>{
+                        
+                        this.setState({
+                            selectedToken: e.target.value
+                        })
+                    }}>
+                        {tokensBalance.map((token)=>{
+                            return  <option value={token.token.address} key={token.token.address}>{token.token.symbol}</option>
+                        })}
+                   
+
+                    </select>
+                </div>
                 <div>
                     <strong>{tokenBalance.token.symbol} Balance: </strong>
                     <span>{Number(utils.formatUnits(tokenBalance.balance)).toLocaleString()}</span>
@@ -171,7 +191,8 @@ class SwapToken extends PureComponent<Props, OwnProps> {
 
                 </div>
             </>
-        )
+        ):
+        null
     }
 
     renderAmountToGet = () => {
@@ -257,10 +278,9 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         )
     }
     
-
     render() {
         const { ethBalance, tokensBalance, web3State } = this.props;
-        if(web3State!== Web3State.Done || !ethBalance || tokensBalance.length === 0) return null
+        if(web3State!== Web3State.Done || !ethBalance || tokensBalance.length === 0 ) return null
         return (
             <div className="tokens_info">
                 {this.renderUserInfo()}

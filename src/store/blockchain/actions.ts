@@ -236,11 +236,12 @@ export const fetchTokenBalances: ThunkCreator<Promise<any>> = () => {
         const web3Wrapper = await getWeb3Wrapper();
         const signer = web3Wrapper.getSigner()
         const ethAccount = await signer.getAddress();
-        const networkID = getState().blockchain.networkID
-
-
-        const knownTokens = getKnownTokens(networkID).getTokens()
-        knownTokens.map(async token => {
+        const networkID = getState().blockchain.networkID       
+            
+        
+        const knownTokens = (await getKnownTokens(networkID)).getTokens()
+            console.log('knownTokensknownTokens',knownTokens)        
+       await Promise.all(knownTokens.map(async token => {
             const erc20 = new ERC20Controller(token.address, signer);
             const balance = (await erc20.balanceOf(ethAccount)).toString();
             const decimals = parseInt((await erc20.getDecimals()).toString())
@@ -254,7 +255,6 @@ export const fetchTokenBalances: ThunkCreator<Promise<any>> = () => {
             const tokenSwapAllowance = await getAllowance(signer, token.address, process.env.GSN_TOKEN_SWAP, decimals);
 
 
-
             dispatch(setTokenBalance({
                 token,
                 balance,
@@ -263,8 +263,8 @@ export const fetchTokenBalances: ThunkCreator<Promise<any>> = () => {
                 totalSupply,
                 burned,
                 tokenSwapAllowance
-            }));
-        })
+            }))
+        }))
     }
 }
 

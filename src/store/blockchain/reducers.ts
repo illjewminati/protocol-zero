@@ -15,6 +15,7 @@ const initialBlockchainState: Blockchain = {
     gsnProvider: null,
     web3Provider: null,
     gasPrice: null,
+    selectedToken: null
 };
 
 
@@ -50,7 +51,8 @@ export default function blockchain(state: Blockchain = initialBlockchainState, a
             return { ...state, gasPrice: action.payload}
         case getType(actions.setWeb3Provider):
             return { ...state, web3Provider: action.payload}
-        
+        case getType(actions.setWeb3Provider):
+            return { ...state, selectedToken: action.payload}   
         default:
             return state;
     }
