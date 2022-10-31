@@ -1,6 +1,6 @@
 import { BigNumber, ethers, utils } from "ethers";
 import { PureComponent } from "react";
-import { Alert, Button, Container, Form, InputGroup, Spinner } from "react-bootstrap";
+import { Alert, Button, Container, Form, Spinner, } from "react-bootstrap";
 import { connect } from "react-redux";
 import { addToken } from "../../services/metamask";
 import { initBalances, reviewSwap, startAllowanceAndSwapSteps, startSwapStep } from "../../store/actions";
@@ -29,8 +29,8 @@ interface StateProps {
 interface DispatchProps {
     fetchBalances: () => any; //
     startAllowanceAndSwapSteps: (
-        token: Token, 
-        to: string, 
+        token: Token,
+        to: string,
         amount: string,
         callback: (res: SwapResponse) => void
     ) => any;
@@ -89,8 +89,8 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         }
 
         this.setState({
-            txHash: res.data.txHash, 
-            gasUsed: res.data.gasUsed, 
+            txHash: res.data.txHash,
+            gasUsed: res.data.gasUsed,
             swapState: SwapState.Done,
             txPrice: res.data.txPrice,
             deposited: res.data.deposited,
@@ -131,47 +131,32 @@ class SwapToken extends PureComponent<Props, OwnProps> {
             } else {
                 this.props.startSwapStep(tokenBalance.token, amount, this.onSwap)
             }
-            
+
         } catch(e) {
             const {message} = e;
             if(message.startsWith("user rejected transaction")){
-               
+
             } else if(message.includes("Not enough to pay for tx")) {
                 this.setState({swapState: SwapState.Init, errorMessage: "Not enough to pay for tx, try swapping more tokens"})
             }
-            
+
         }
     }
 
     renderTokenInfo = () => {
-        
+
         const { selectedToken } = this.state
         if(selectedToken === "") return null;
         const { tokensBalance } = this.props;
 
-        const tokenBalance = tokensBalance.find(t => t.token.address.toLowerCase() === selectedToken.toLowerCase())        
-        
+        const tokenBalance = tokensBalance.find(t => t.token.address.toLowerCase() === selectedToken.toLowerCase())
+
 
         return  tokenBalance ? (
-            
+
             <>
                 <div>
-                    <select defaultValue={selectedToken.toLowerCase()} onChange={(e)=>{
-                        
-                        this.setState({
-                            selectedToken: e.target.value
-                        })
-                    }}>
-                        {tokensBalance.map((token)=>{
-                            return  <option value={token.token.address} key={token.token.address}>{token.token.symbol}</option>
-                        })}
-                   
-
-                    </select>
-                </div>
-                <div>
-                    <strong>{tokenBalance.token.symbol} Balance: </strong>
-                    <span>{Number(utils.formatUnits(tokenBalance.balance)).toLocaleString()}</span>
+                    <Button variant="link" onClick={() => this.addToken(tokenBalance.token)}>Add token To Metamask</Button>
                 </div>
                 <div>
                     <strong></strong>
@@ -185,11 +170,6 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                     <strong>Total Burned: </strong>
                     <span>{Number(tokenBalance.burned).toLocaleString()}</span>
                 </div>
-                
-                <div>
-                    <Button variant="link" onClick={() => this.addToken(tokenBalance.token)}>Add token To Metamask</Button>
-
-                </div>
             </>
         ):
         null
@@ -197,16 +177,17 @@ class SwapToken extends PureComponent<Props, OwnProps> {
 
     renderAmountToGet = () => {
         const { amount, selectedToken, reviewSwap, swapReviewResponse } = this.state;
-        if(amount === "" || isNaN(parseFloat(amount))) return null
+
+        const isDisabled = !Number(amount) || isNaN(parseFloat(amount))
 
         const title = reviewSwap ? "Swap" : "Review Swap"
 
         return (
             <div>
                  {swapReviewResponse === "" ? null : <small>{swapReviewResponse} ETH</small>}
-                 
+
                  <div>
-                    <Button className="swap_button" onClick={() => this.swap(selectedToken)}>{title}</Button>
+                    <Button disabled={isDisabled} className="swap_button" onClick={() => this.swap(selectedToken)}>{title}</Button>
                  </div>
             </div>
         )
@@ -216,6 +197,9 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         const { swapState, txHash, gasUsed, selectedToken, errorMessage, deposited, withdrawn} = this.state;
         if(selectedToken === "") return null;
         const { tokensBalance } = this.props
+        const { ethBalance } = this.props
+
+        const tokenBalance = tokensBalance.find(t => t.token.address.toLowerCase() === selectedToken.toLowerCase())
 
         if(swapState === SwapState.Loading) {
             return (
@@ -243,50 +227,107 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         return (
             <Container >
                 <div>
-                    <InputGroup className="mb-3" style={{width: "200px", margin: "5px auto 0px auto"}}>
-                        <Form.Control
-                            className="swap"
-                            placeholder="Amount to swap"
-                            aria-label="Amount to swap"
-                            aria-describedby="basic-addon1"
-                            type="number"
-                            value={this.state.amount}
-                            onChange={
-                                ({target}) => this.setState({
-                                    amount: target.value, 
-                                    errorMessage: null, 
-                                    reviewSwap: false, 
-                                    swapReviewResponse: ""
-                                })
-                            }
-                        />
-                    </InputGroup>
+                    <div className="swap-container__input-wrapper">
+                        <div className="swap-container__swap-amount">
+                            <Form.Control
+                                className="swap swap--price"
+                                placeholder="Amount to swap"
+                                aria-label="Amount to swap"
+                                aria-describedby="basic-addon1"
+                                type="number"
+                                value={this.state.amount}
+                                onChange={
+                                    ({target}) => this.setState({
+                                        amount: target.value,
+                                        errorMessage: null,
+                                        reviewSwap: false,
+                                        swapReviewResponse: ""
+                                    })
+                                }
+                            />
+                            <div className="swap-container__swap-balance-wrapper">
+                                <span className="swap-container__swap-balance">
+                                    Balance: {ethBalance?.balance ? Number(utils.formatUnits(ethBalance.balance)).toLocaleString() : '0'}
+                                </span>
+                                <button
+                                    className="swap-container__swap-balance-button"
+                                    type="button"
+                                    onClick={() => { this.setState({
+                                        amount: ethBalance?.balance ?
+                                            Number(utils.formatUnits(ethBalance?.balance)).toLocaleString() : '0'
+                                    }) }}
+                                >
+                                    Max
+                                </button>
+                            </div>
+                        </div>
+                        <div className="swap-container__swap-amount">
+                            <div className="swap-container__swap-select-wrapper">
+                                <Form.Select
+                                    id="select"
+                                    className="custom-select swap-container__swap-select"
+                                    defaultValue={selectedToken.toLowerCase()}
+                                    value={selectedToken}
+                                    onChange={(e)=>{
+
+                                        this.setState({
+                                            selectedToken: e.target.value
+                                        })
+                                    }}
+                                >
+                                    {tokensBalance.map((token)=>{
+                                        return  <option value={token.token.address} key={token.token.address}>{token.token.symbol}</option>
+                                    })}
+                                </Form.Select>
+                                <span className="swap-container__swap-select-arrow">
+                                    ▲
+                                </span>
+                            </div>
+                            <Form.Control
+                                className={tokenBalance?.balance ? 'swap swap--price' : 'swap'}
+                                placeholder="Swapped amount"
+                                aria-label="Swapped amount"
+                                aria-describedby="basic-addon1"
+                                disabled
+                                type="number"
+                                value={
+                                    this.state.amount ?
+                                        (Number(this.state.amount) * Number(utils.formatUnits(tokenBalance.uniswapValue))).toFixed(3):
+                                        'Swapped amount'
+                                }
+                            />
+                            { tokenBalance?.balance ? (
+                                <div className="swap-container__swap-balance-wrapper">
+                                    <span className="swap-container__swap-balance">
+                                        Balance: {
+                                        tokenBalance?.balance ?
+                                            Number(utils.formatUnits(tokenBalance.balance)).toLocaleString() :
+                                            '0'
+                                    }
+                                    </span>
+                                </div>
+                            ): null }
+                        </div>
+                    </div>
                     {this.renderAmountToGet()}
                 </div>
-                
+
             </Container>
         )
     }
 
-    renderUserInfo = () => {
-        const { ethBalance } = this.props
-        return (
-            <div>
-                <strong>ETH Balance: </strong>
-                <span>{Number(utils.formatUnits(ethBalance.balance)).toLocaleString()}</span>
-            </div>
-        )
-    }
-    
     render() {
         const { ethBalance, tokensBalance, web3State } = this.props;
         if(web3State!== Web3State.Done || !ethBalance || tokensBalance.length === 0 ) return null
         return (
             <div className="tokens_info">
-                {this.renderUserInfo()}
-               
-                {this.renderTokenInfo()}
+                <div className="swap-container__header">
+                    <p className="swap-container__header-text">
+                        Swap
+                    </p>
+                </div>
                 {this.renderSwapInfo()}
+                {this.renderTokenInfo()}
 
             </div>
         )
@@ -308,8 +349,8 @@ const mapDispatchToProps = (dispatch: any): DispatchProps => {
     return {
         fetchBalances: () => dispatch(initBalances()),
         startAllowanceAndSwapSteps: (
-            token: Token, 
-            to: string, 
+            token: Token,
+            to: string,
             amount: string,
             callback: (res: SwapResponse) => void
         ) => dispatch(startAllowanceAndSwapSteps(token, to, amount, callback)),
