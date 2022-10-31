@@ -3,6 +3,7 @@
 }
 
 .tokens_info {
+  margin: 0 auto;
     .form_msig {
         margin: 3em auto 0px;
         .with_dropdown.input-group.input-group-lg {
@@ -14,26 +15,25 @@
             }
         }
     }
-    .swap.container {
-        margin-top: 2em;
-        .mb-3{
-            margin-bottom: 0rem !important;
-        }
-        .swap_button.btn.btn-primary {
-            margin-top: 1em;
-        }
-    }
     .alert-danger.show {
         width: 50%;
         margin: 1em auto;
     }
-    
+
+  background: #0d1218;
+  width: 100%;
+  max-width: 500px;
+  min-width: 300px;
+  border-radius: 10px;
+  padding: 15px;
 }
 
 section.banar_area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: inherit;
     z-index: 1;
-    padding: 245px 0 170px;
   }
 
   img.banarBg {
@@ -50,16 +50,99 @@ section.banar_area {
   .container_index {
     width: 60%;
     font-size: 18px;
+    margin: 0 auto;
   }
 
-  .swap {
+  .swap, .form-control {
     height: 56px;
-    width: 250px;        
+    width: 100%;
+    max-width: 500px;
+    min-width: 300px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: 400;
+    color: #5e6784;
+    background: #141b2b;
+    border: none;
     text-align: center;
-    font-weight: bold;
+
+    &:focus, &:disabled {
+      max-width: 500px;
+      min-width: 300px;
+      height: 56px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 24px;
+      font-weight: 400;
+      color: #5e6784;
+      background: #141b2b;
+      border: none;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+
+    &:nth-child(2) {
+      padding-right: 85px;
+    }
   }
 
   .mb-3, .my-3 {
     margin-bottom: 1rem !important;
     width: 250px !important;
   }
+
+.swap-container__header-text {
+  margin: 10px 0;
+  color: #feffff;
+}
+
+.swap-container__input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.swap_button {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 15px;
+  border: none;
+  background: #1c2c50;
+  color: #4f88f6;
+  height: 50px;
+}
+
+.swap-container__swap-amount {
+  position: relative;
+}
+
+.swap-container__swap-select {
+  background: #4C82FC;
+  font-size: 10px;
+  width: 80px;
+  border-radius: 50px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.swap-container__swap-select-wrapper {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.swap-container__swap-select-arrow {
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  color: white;
+  transform: rotate(180deg) translateY(50%);
+  cursor: pointer;
+}
