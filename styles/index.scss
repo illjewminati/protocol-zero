@@ -54,7 +54,7 @@ section.banar_area {
   }
 
   .swap, .form-control {
-    height: 56px;
+    height: 70px;
     width: 100%;
     max-width: 500px;
     min-width: 300px;
@@ -64,12 +64,11 @@ section.banar_area {
     color: #5e6784;
     background: #141b2b;
     border: none;
-    text-align: center;
 
     &:focus, &:disabled {
       max-width: 500px;
       min-width: 300px;
-      height: 56px;
+      height: 70px;
       width: 100%;
       border-radius: 10px;
       font-size: 24px;
@@ -79,6 +78,16 @@ section.banar_area {
       border: none;
     }
 
+    &--price {
+      height: 80px;
+      padding-bottom: 25px;
+
+      &:focus, &:disabled {
+        height: 80px;
+        padding-bottom: 25px;
+      }
+    }
+
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -86,7 +95,7 @@ section.banar_area {
     }
 
     &:nth-child(2) {
-      padding-right: 85px;
+      padding-right: 105px;
     }
   }
 
@@ -145,4 +154,25 @@ section.banar_area {
   color: white;
   transform: rotate(180deg) translateY(50%);
   cursor: pointer;
+}
+
+.swap-container__swap-balance-wrapper {
+  display: flex;
+  position: absolute;
+  gap: 10px;
+  bottom: 10px;
+  left: 12px;
+}
+
+.swap-container__swap-balance {
+  color: #9AA1B4;
+  font-size: 12px;
+}
+
+.swap-container__swap-balance-button {
+  background: none;
+  border: none;
+  color: #4c82fc;
+  font-size: 12px;
+  padding: 0;
 }

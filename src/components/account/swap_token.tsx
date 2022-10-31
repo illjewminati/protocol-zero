@@ -159,10 +159,6 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                     <Button variant="link" onClick={() => this.addToken(tokenBalance.token)}>Add token To Metamask</Button>
                 </div>
                 <div>
-                    <strong>{tokenBalance.token.symbol} Balance: </strong>
-                    <span>{Number(utils.formatUnits(tokenBalance.balance)).toLocaleString()}</span>
-                </div>
-                <div>
                     <strong></strong>
                     <span>1 ETH  = {Number(utils.formatUnits(tokenBalance.uniswapValue)).toLocaleString()} {tokenBalance.token.symbol}</span>
                 </div>
@@ -182,7 +178,7 @@ class SwapToken extends PureComponent<Props, OwnProps> {
     renderAmountToGet = () => {
         const { amount, selectedToken, reviewSwap, swapReviewResponse } = this.state;
 
-        const isDisabled = !amount || isNaN(parseFloat(amount))
+        const isDisabled = !Number(amount) || isNaN(parseFloat(amount))
 
         const title = reviewSwap ? "Swap" : "Review Swap"
 
@@ -201,6 +197,7 @@ class SwapToken extends PureComponent<Props, OwnProps> {
         const { swapState, txHash, gasUsed, selectedToken, errorMessage, deposited, withdrawn} = this.state;
         if(selectedToken === "") return null;
         const { tokensBalance } = this.props
+        const { ethBalance } = this.props
 
         const tokenBalance = tokensBalance.find(t => t.token.address.toLowerCase() === selectedToken.toLowerCase())
 
@@ -231,22 +228,39 @@ class SwapToken extends PureComponent<Props, OwnProps> {
             <Container >
                 <div>
                     <div className="swap-container__input-wrapper">
-                        <Form.Control
-                            className="swap"
-                            placeholder="Amount to swap"
-                            aria-label="Amount to swap"
-                            aria-describedby="basic-addon1"
-                            type="number"
-                            value={this.state.amount}
-                            onChange={
-                                ({target}) => this.setState({
-                                    amount: target.value,
-                                    errorMessage: null,
-                                    reviewSwap: false,
-                                    swapReviewResponse: ""
-                                })
-                            }
-                        />
+                        <div className="swap-container__swap-amount">
+                            <Form.Control
+                                className="swap swap--price"
+                                placeholder="Amount to swap"
+                                aria-label="Amount to swap"
+                                aria-describedby="basic-addon1"
+                                type="number"
+                                value={this.state.amount}
+                                onChange={
+                                    ({target}) => this.setState({
+                                        amount: target.value,
+                                        errorMessage: null,
+                                        reviewSwap: false,
+                                        swapReviewResponse: ""
+                                    })
+                                }
+                            />
+                            <div className="swap-container__swap-balance-wrapper">
+                                <span className="swap-container__swap-balance">
+                                    Balance: {ethBalance?.balance ? Number(utils.formatUnits(ethBalance.balance)).toLocaleString() : '0'}
+                                </span>
+                                <button
+                                    className="swap-container__swap-balance-button"
+                                    type="button"
+                                    onClick={() => { this.setState({
+                                        amount: ethBalance?.balance ?
+                                            Number(utils.formatUnits(ethBalance?.balance)).toLocaleString() : '0'
+                                    }) }}
+                                >
+                                    Max
+                                </button>
+                            </div>
+                        </div>
                         <div className="swap-container__swap-amount">
                             <div className="swap-container__swap-select-wrapper">
                                 <Form.Select
@@ -270,34 +284,35 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                                 </span>
                             </div>
                             <Form.Control
-                                className="swap"
-                                placeholder="Amount to swap"
-                                aria-label="Amount to swap"
+                                className={tokenBalance?.balance ? 'swap swap--price' : 'swap'}
+                                placeholder="Swapped amount"
+                                aria-label="Swapped amount"
                                 aria-describedby="basic-addon1"
                                 disabled
                                 type="number"
                                 value={
                                     this.state.amount ?
                                         (Number(this.state.amount) * Number(utils.formatUnits(tokenBalance.uniswapValue))).toFixed(3):
-                                        '0'
+                                        'Swapped amount'
                                 }
                             />
+                            { tokenBalance?.balance ? (
+                                <div className="swap-container__swap-balance-wrapper">
+                                    <span className="swap-container__swap-balance">
+                                        Balance: {
+                                        tokenBalance?.balance ?
+                                            Number(utils.formatUnits(tokenBalance.balance)).toLocaleString() :
+                                            '0'
+                                    }
+                                    </span>
+                                </div>
+                            ): null }
                         </div>
                     </div>
                     {this.renderAmountToGet()}
                 </div>
 
             </Container>
-        )
-    }
-
-    renderUserInfo = () => {
-        const { ethBalance } = this.props
-        return (
-            <div>
-                <strong>ETH Balance: </strong>
-                <span>{Number(utils.formatUnits(ethBalance.balance)).toLocaleString()}</span>
-            </div>
         )
     }
 
@@ -313,7 +328,6 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                 </div>
                 {this.renderSwapInfo()}
                 {this.renderTokenInfo()}
-                {this.renderUserInfo()}
 
             </div>
         )
