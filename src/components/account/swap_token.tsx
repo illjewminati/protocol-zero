@@ -245,24 +245,7 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                                     })
                                 }
                             />
-                            <div className="swap-container__swap-balance-wrapper">
-                                <span className="swap-container__swap-balance">
-                                    Balance: {ethBalance?.balance ? Number(utils.formatUnits(ethBalance.balance)).toLocaleString() : '0'}
-                                </span>
-                                <button
-                                    className="swap-container__swap-balance-button"
-                                    type="button"
-                                    onClick={() => { this.setState({
-                                        amount: ethBalance?.balance ?
-                                            Number(utils.formatUnits(ethBalance?.balance)).toLocaleString() : '0'
-                                    }) }}
-                                >
-                                    Max
-                                </button>
-                            </div>
-                        </div>
-                        <div className="swap-container__swap-amount">
-                            <div className="swap-container__swap-select-wrapper">
+                             <div className="swap-container__swap-select-wrapper">
                                 <Form.Select
                                     id="select"
                                     className="custom-select swap-container__swap-select"
@@ -283,28 +266,47 @@ class SwapToken extends PureComponent<Props, OwnProps> {
                                     ▲
                                 </span>
                             </div>
-                            <Form.Control
-                                className={tokenBalance?.balance ? 'swap swap--price' : 'swap'}
-                                placeholder="Swapped amount"
-                                aria-label="Swapped amount"
-                                aria-describedby="basic-addon1"
-                                disabled
-                                type="number"
-                                value={
-                                    this.state.amount ?
-                                        (Number(this.state.amount) * Number(utils.formatUnits(tokenBalance.uniswapValue))).toFixed(3):
-                                        'Swapped amount'
-                                }
-                            />
-                            { tokenBalance?.balance ? (
-                                <div className="swap-container__swap-balance-wrapper">
-                                    <span className="swap-container__swap-balance">
+                            <div className="swap-container__swap-balance-wrapper">
+                                
+                                <span className="swap-container__swap-balance">
                                         Balance: {
                                         tokenBalance?.balance ?
                                             Number(utils.formatUnits(tokenBalance.balance)).toLocaleString() :
                                             '0'
                                     }
-                                    </span>
+                                </span>
+                                <button
+                                    className="swap-container__swap-balance-button"
+                                    type="button"
+                                    onClick={() => { this.setState({
+                                        amount: tokenBalance?.balance ?
+                                            Number(utils.formatUnits(tokenBalance?.balance)).toLocaleString() : '0'
+                                    }) }}
+                                >
+                                    Max
+                                </button>
+                            </div>
+                        </div>
+                        <div className="swap-container__swap-amount">
+                           
+                            <Form.Control
+                                className={tokenBalance?.balance ? 'swap swap--price' : 'swap'}
+                                placeholder="Amount to get"
+                                aria-label="Amount to get"
+                                aria-describedby="basic-addon1"
+                                disabled
+                                type="number"
+                                value={
+                                    this.state.amount ?
+                                        (Number(this.state.amount) / Number(utils.formatUnits(tokenBalance.uniswapValue))).toFixed(3):
+                                        'Amount to get'
+                                }
+                            />
+                            { tokenBalance?.balance ? (
+                                <div className="swap-container__swap-balance-wrapper">                                  
+                                    <span className="swap-container__swap-balance">
+                                    Balance: {ethBalance?.balance ? Number(utils.formatUnits(ethBalance.balance)).toLocaleString() : '0'}
+                                </span>
                                 </div>
                             ): null }
                         </div>
